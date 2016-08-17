@@ -34,7 +34,7 @@ var SCREEN_HEIGHT = canvas.height;
 var LAYER_COUNT =3;
 var MAP = {tw: 60, th: 15};
 var TILE =35;
-var TILESET_TILE = * 2;
+var TILESET_TILE = TILE * 2;
 var TILESET_PADDING = 2;
 var TILESET_SPACING = 2;
 var TILESET_COUNT_X = 14;
@@ -56,7 +56,10 @@ var keyboard = new Keyboard();
 
 // load the image to use for the level tiles 
 var tileset = document.createElement("img"); 
-tileset.src = "tileset.png"; 
+tileset.src = "tileset.png";
+
+//var enemy = document.creatElement("img");
+var enemy = new Enemy();
 
 function drawMap() {
 	for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) {
@@ -78,12 +81,14 @@ function drawMap() {
 function run() {
 	context.fillStyle = "#ccc";
 	context.fillRect(0, 0, canvas.width, canvas.height);
-	drawmap();
+	drawMap();
 	var deltaTime = getDeltaTime();
 
 	//context.drawImage(chuckNorris, SCREEN_WIDTH/2 - chuckNorris.width/2, SCREEN_HEIGHT/2 - chuckNorris.height/2);
 	player.update(deltaTime);
 	player.draw();
+	enemy.update(deltaTime);
+	enemy.draw();
 	// update the frame counter 
 	fpsTime += deltaTime;
 	fpsCount++;
