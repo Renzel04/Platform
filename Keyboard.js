@@ -2,12 +2,11 @@ var Keyboard = function () {
     var self = this;
 
 
-    window.addEventListener('keydown', function (evt) { self.onKeyDown(evt); }, false);
-    window.addEventListener('keyup', function (evt) { self.onKeyUp(evt); }, false);
-
 
     this.keyListeners = new Array();
     this.keys = new Array();
+    window.addEventListener('keydown', function (evt) { self.onKeyDown(evt); }, false);
+    window.addEventListener('keyup', function (evt) { self.onKeyUp(evt); }, false);
 
 
     // Key constants. Go here for a list of key codes:  
@@ -31,18 +30,4 @@ Keyboard.prototype.onKeyUp = function (evt) {
 };
 Keyboard.prototype.isKeyDown = function (keyCode) {
     return this.keys[keyCode];
-}; 
-Player.prototype.update = function(deltaTime) 
-{    
-    if( typeof(this.rotation) == "undefined" )   
-            this.rotation = 0;      // hang on, where did this variable come from!     
-    
-    if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true)  
-    {   
-        this.rotation -= deltaTime;  
-    }  
-    else  
-    {   
-        this.rotation += deltaTime;  
-    } 
-} 
+}

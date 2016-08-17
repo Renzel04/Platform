@@ -1,36 +1,24 @@
+var Player = function() { 
+    this.image = document.createElement("img"); 
+    this.x = canvas.width/2; 
+    this.y = canvas.height/2; 
+    this.width = 159; 
+    this.height = 163;
 
-function run() 
-{  
-    context.fillStyle = "#ccc";    
-    context.fillRect(0, 0, canvas.width, canvas.height);    
-    var deltaTime = getDeltaTime();    
-    
-    player.update(deltaTime);  
-    player.draw();      
-    
-        // update the frame counter   
-    fpsTime += deltaTime;  fpsCount++;  
-    if(fpsTime >= 1)  
-    {   
-        fpsTime -= 1;   
-        fps = fpsCount;   
-        fpsCount = 0;  
-    }       
-    // draw the FPS  
-    context.fillStyle = "#f00";  
-    context.font="14px Arial";  
-    context.fillText("FPS: " + fps, 5, 20, 100); 
-} 
+    this.image.src = "hero.png";   
+};
 Player.prototype.update = function(deltaTime) 
-{    
-    if( typeof(this.rotation) == "undefined" )   
-            this.rotation = 0;      // hang on, where did this variable come from!     
-    
-    if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true)  
-    {   
-        this.rotation -= deltaTime;  
-    }  else  
-    {   
-        this.rotation += deltaTime;  
-    } 
-} 
+{ 
+    if( typeof(this.rotation) == "undefined" ) 
+        this.rotation = 0;      // hang on, where did this variable come from! 
+    this.rotation += deltaTime; 
+}
+
+Player.prototype.draw = function() 
+{ 
+    context.save(); 
+    context.translate(this.x, this.y); 
+    context.rotate(this.rotation); 
+    context.drawImage(this.image, -this.width/2, -this.height/2); 
+    context.restore(); 
+}
