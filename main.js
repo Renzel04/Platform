@@ -1,8 +1,27 @@
+var startFrameMillis = Date.now(); 
+var endFrameMillis = Date.now(); 
+function getDeltaTime()         // Only call this function once per frame 
+{ 
+    endFrameMillis = startFrameMillis; startFrameMillis = Date.now(); 
+    var deltaTime = (startFrameMillis - endFrameMillis) * 0.001; 
+    if (deltaTime > 1)          // validate that the delta is within range 
+    { 
+        deltaTime = 1; 
+    } 
+    return deltaTime; 
+}
+
 var canvas = document.getElementById("gameCanvas");
 var context = canvas.getContext("2d");
 
 var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
+// define some constant values for game states
+var STATE_SPLASH = 0;
+var STATE_GAME = 1;
+var STATE_GAMEOVER = 2;
+
+var gameState = STATE_SPLASH;
 
 // This function will return the time in seconds since the function 
 // was last called
@@ -103,6 +122,24 @@ function initialize() {
 	}
 }
 
+var splashTimer = 3;
+function runSplash(deltaTime) 
+{
+	splashTimer -= deltaTime;
+	if (splashTimer <= 0) 
+	{
+		gameState = STATE_GAME;
+		return;
+	}
+	context.fillStyle = "#000";
+	context.font = "24px Arial";
+	context.fillText("SPLASH SCREEN", 200, 240);
+}
+function runGame(deltaTime) {
+}
+function runGameOver(deltaTime) {
+}
+
 // load the image to use for the level tiles 
 var tileset = document.createElement("img");
 tileset.src = "tileset.png";
@@ -165,12 +202,27 @@ function drawMap()
 		}
 	}
 }
-function run() {
+
+var spawnTimer = 0
+function run() 
+{
 	context.fillStyle = "#ccc";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	drawMap();
 	var deltaTime = getDeltaTime();
 
+	switch (gameState) 
+    {
+        case STATE_SPLASH:
+            runSplash(deltaTime);
+            break;
+        case STATE_GAME:
+            runGame(deltaTime);
+            break;
+        case STATE_GAMEOVER:
+            runGameOver(deltaTime);
+            break;
+    }
 	//context.drawImage(chuckNorris, SCREEN_WIDTH/2 - chuckNorris.width/2, SCREEN_HEIGHT/2 - chuckNorris.height/2);
 	player.update(deltaTime);
 	player.draw();
