@@ -37,21 +37,22 @@ var Player = function () {
     this.offset.set(-55, -87);*/
 
     this.velocity = new Vector2();
-
+    this.velocity.set(0, 0)
 
     this.falling = true;
     this.jumping = false;
 
     this.direction = LEFT;
 
-    /*this.image.src = "hero.png";*/
+    this.image.src = "hero.png";
 };
 
-/*sprite.update()*/
+
 Player.prototype.update = function (deltaTime) 
 {
+    sprite.update() 
     this.sprite.update(deltaTime);
-    /*var left = false;
+    var left = false;
     var right = false;
     var jump = false;
     // check keypress events
@@ -79,7 +80,7 @@ Player.prototype.update = function (deltaTime)
         ddx = ddx - FRICTION; // player was going right, but not any more
     if (jump && !this.jumping && !falling) {
         ddy = ddy - JUMP; // apply an instantaneous (large) vertical impulse
-        this.jumping = true;*/
+        this.jumping = true;
     }
     // calculate the new position and velocity:
     this.position.y = Math.floor(this.position.y + (deltaTime * this.velocity.y));
@@ -153,13 +154,14 @@ Player.prototype.update = function (deltaTime)
             this.position.x = tileToPixel(tx + 1); this.velocity.x = 0; // stop horizontal velocity
         }
     }
-
+}
     Player.prototype.draw = function () 
     {
-        context.save();
+        /*context.save();
         context.translate(this.position.x, this.position.y);
         context.rotate(this.rotation);
         context.drawImage(this.image, -this.width / 2, -this.height / 2);
+        context.restore();*/
+
         this.sprite.draw(context, this.position.x, this.position.y);
-        context.restore();
     }
