@@ -54,32 +54,53 @@ Player.prototype.update = function (deltaTime)
     var left = false;
     var right = false;
     var jump = false;
-    // check keypress events
-    if (keyboard.isKeyDown(keyboard.KEY_LEFT) == true) {
-        left = true;
+
+    if (jump && !this.jumping && !falling) {
+        // apply an instantaneous (large) vertical impulse
+        ddy = ddy - JUMP;
+        this.jumping = true;
+        if (this.direction == LEFT)
+            this.sprite.setAnimation(ANIM_JUMP_LEFT)
+        else
+            this.sprite.setAnimation(ANIM_JUMP_RIGHT)
     }
-    if (keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) {
+    // check keypress events
+    if (keyboard.isKeyDown(keyboard.KEY_LEFT) == true) 
+    {
+        left = true;
+        this.direction = LEFT;
+        if (this.sprite.currentAnimation != ANIM_WALK_LEFT &&
+            this.jumping == false)
+            this.sprite.setAnimation(ANIM_WALK_LEFT);
+    }
+    else if (keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) 
+    {
         right = true;
+        this.direction = RIGHT;
+        if (this.sprite.currentAnimation != ANIM_WALK_RIGHT &&
+            this.jumping == false)
+            this.sprite.setAnimation(ANIM_WALK_RIGHT);
+    }
+    else {
+        if (this.jumping == false && this.falling == false) {
+            if (this.direction == LEFT) {
+                if (this.sprite.currentAnimation != ANIM_IDLE_LEFT)
+                    this.sprite.setAnimation(ANIM_IDLE_LEFT);
+            }
+            else {
+                if (this.sprite.currentAnimation != ANIM_IDLE_RIGHT)
+                    this.sprite.setAnimation(ANIM_IDLE_RIGHT);
+            }
+        }
     }
     if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true) {
         jump = true;
-    }
-    var wasleft = this.velocity.x < 0;
-    var wasright = this.velocity.x > 0;
-    var falling = this.falling;
-    var ddx = 0; // acceleration
-    var ddy = GRAVITY;
-    if (left)
-        ddx = ddx - ACCEL; // player wants to go left
-    else if (wasleft)
-        ddx = ddx + FRICTION; // player was going left, but not any more
-    if (right)
-        ddx = ddx + ACCEL; // player wants to go right
-    else if (wasright)
-        ddx = ddx - FRICTION; // player was going right, but not any more
-    if (jump && !this.jumping && !falling) {
-        ddy = ddy - JUMP; // apply an instantaneous (large) vertical impulse
-        this.jumping = true;
+        if (left == true) {
+            this.sprite.setAnimation(ANIM_JUMP_LEFT);
+        }
+        if (right == true) {
+            this.sprite.setAnimation(ANIM_JUMP_RIGHT);
+        }
     }
     // calculate the new position and velocity:
     this.position.y = Math.floor(this.position.y + (deltaTime * this.velocity.y));
