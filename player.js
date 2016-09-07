@@ -44,13 +44,12 @@ var Player = function () {
 
     this.direction = LEFT;
 
-    this.image.src = "hero.png";
+    /*this.image.src = "hero.png";*/
 };
 
 
 Player.prototype.update = function (deltaTime) 
 {
-    sprite.update() 
     this.sprite.update(deltaTime);
     var left = false;
     var right = false;
