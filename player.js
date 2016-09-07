@@ -93,8 +93,26 @@ Player.prototype.update = function (deltaTime)
             }
         }
     }
-    if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true) {
+    if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true) 
+    {
         jump = true;
+    }
+    var wasleft = this.velocity.x < 0;
+    var wasright = this.velocity.x > 0;
+    var falling = this.falling;
+    var ddx = 0; // acceleration
+    var ddy = GRAVITY;
+    if (left)
+        ddx = ddx - ACCEL; // player wants to go left
+    else if (wasleft)
+        ddx = ddx + FRICTION; // player was going left, but not any more
+    if (right)
+        ddx = ddx + ACCEL; // player wants to go right
+    else if (wasright)
+        ddx = ddx - FRICTION; // player was going right, but not any more
+    if (jump && !this.jumping && !falling) {
+        ddy = ddy - JUMP; // apply an instantaneous (large) vertical impulse
+        this.jumping = true;
         if (left == true) {
             this.sprite.setAnimation(ANIM_JUMP_LEFT);
         }
