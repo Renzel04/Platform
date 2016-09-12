@@ -101,6 +101,36 @@ Player.prototype.update = function (deltaTime)
         if (right == true) {
             this.sprite.setAnimation(ANIM_JUMP_RIGHT);
         }
+
+        var left = false;
+        var right = false;
+        var jump = false;
+        // check keypress events
+        if (keyboard.isKeyDown(keyboard.KEY_LEFT) == true) {
+            left = true;
+        }
+        if (keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) {
+            right = true;
+        }
+        if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true) {
+            jump = true;
+        }
+        var wasleft = this.velocity.x < 0;
+        var wasright = this.velocity.x > 0;
+        var falling = this.falling;
+        var ddx = 0; // acceleration
+        var ddy = GRAVITY;
+        if (left)
+            ddx = ddx - ACCEL; // player wants to go left
+        else if (wasleft)
+            ddx = ddx + FRICTION; // player was going left, but not any more
+        if (right)
+            ddx = ddx + ACCEL; // player wants to go right
+        else if (wasright)
+            ddx = ddx - FRICTION; // player was going right, but not any more
+        if (jump && !this.jumping && !falling) {
+            ddy = ddy - JUMP; // apply an instantaneous (large) vertical impulse
+
     }
     // calculate the new position and velocity:
     this.position.y = Math.floor(this.position.y + (deltaTime * this.velocity.y));
