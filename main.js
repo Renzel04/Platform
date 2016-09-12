@@ -1,3 +1,7 @@
+var score = 0;
+var lives = 3;
+
+
 var startFrameMillis = Date.now(); 
 var endFrameMillis = Date.now(); 
 function getDeltaTime()         // Only call this function once per frame 
@@ -241,6 +245,18 @@ function run()
 	context.fillStyle = "#f00";
 	context.font = "14px Arial";
 	context.fillText("FPS: " + fps, 5, 20, 100);
+
+	// score
+	context.fillStyle = "yellow";
+	context.font = "32px Arial";
+	varscoreText = "Score: " + score;
+	context.fillText(scoreText, SCREEN_WIDTH - 170, 35);
+
+	// life counter
+	for (vari = 0; i < lives; i++) 
+	{
+		context.drawImage(heartImage, 20 + ((heartImage.width + 2) * i), 10);
+	}
 }
 
 initialize();
