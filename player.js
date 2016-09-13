@@ -45,6 +45,8 @@ var Player = function ()
 
     this.direction = LEFT;
 
+    this.cooldownTimer = 0;
+
     /*this.image.src = "hero.png";*/
 };
 
@@ -183,11 +185,37 @@ Player.prototype.update = function (deltaTime)
             this.position.x = tileToPixel(tx + 1); this.velocity.x = 0; // stop horizontal velocity
         }
     }
+    if (keyboard.isKeyDown(keyboard.KEY_UP) == true) 
+    {
+        jump = true;
+    }
+    
+    if (this.cooldownTimer > 0) 
+    {
+        this.cooldownTimer -= deltaTime;
+    }
+    if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0) 
+    {
+        sfxFire.play();
+        this.cooldownTimer = 0.3;
+        
+        // Shoot a bullet
+    }
+    
+    //lossing a life and falling
+    if(this.position.y > 600)
+    {
+        lives--; this.position.set(9 * TILE, 0 * TILE);
+    }
 }
 
 Player.prototype.draw = function () 
 {
-    this.sprite.draw(context, this.position.x, this.position.y);
+    context.drawImage(this.image,
+        this.position.x - worldOffsetX, this.position.y);
+    this.sprite.draw(context, 
+    this.position.x,-worldOffsetX, 
+    this.position.y);
     /*context.save();
     context.translate(this.x, this.y);
     context.rotate(this.rotation);
