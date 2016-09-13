@@ -74,6 +74,11 @@ var fpsTime = 0;
 var chuckNorris = document.createElement("img");
 chuckNorris.src = "hero.png";
 
+var heartImage = document.createElement("img");
+heartImage.src = "heartImage.png";
+
+var heartImage = document.createElement("img")
+
 var player = new Player();
 var keyboard = new Keyboard();
 
@@ -100,14 +105,23 @@ var FRICTION = MAXDX * 6;
 var JUMP = METER * 1500;
 
 var cells = [];  // the array that holds our simplified collision data 
-function initialize() {
-	for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) {  // initialize the collision map         
+
+var musicBackground;
+var sfxFire;
+
+function initialize() 
+{
+	for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) 
+	{  // initialize the collision map         
 		cells[layerIdx] = [];
 		var idx = 0;
-		for (var y = 0; y < level1.layers[layerIdx].height; y++) {
+		for (var y = 0; y < level1.layers[layerIdx].height; y++) 
+		{
 			cells[layerIdx][y] = [];
-			for (var x = 0; x < level1.layers[layerIdx].width; x++) {
-				if (level1.layers[layerIdx].data[idx] != 0) {
+			for (var x = 0; x < level1.layers[layerIdx].width; x++) 
+			{
+				if (level1.layers[layerIdx].data[idx] != 0) 
+				{
 					// for each tile we find in the layer data, we need to create 4 collisions                         
 					// (because our collision squares are 35x35 but the tile in the                          
 					// level are 70x70)                    
@@ -124,6 +138,24 @@ function initialize() {
 			}
 		}
 	}
+
+	musicBackground = new Howl(
+		{
+			urls: ["background.ogg"],
+			loop: true,
+			buffer: true,
+			volume: 0.5
+		});
+	musicBackground.play();
+	sfxFire = new Howl(
+		{
+			urls: ["fireEffect.ogg"],
+			buffer: true,
+			volume: 1,
+			onend: function () {
+				isSfxPlaying = false;
+			}
+		});
 }
 
 var splashTimer = 3;
@@ -188,12 +220,37 @@ function bound(value, min, max)
 	return value;
 }
 
+var worldOffsetX =0;
 function drawMap() 
 {
-	for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) {
-		var idx = 0; for (var y = 0; y < level1.layers[layerIdx].height; y++) {
-			for (var x = 0; x < level1.layers[layerIdx].width; x++) {
-				if (level1.layers[layerIdx].data[idx] != 0) {
+	var startX = -1;
+	var maxTiles = Math.floor(SCREEN_WIDTH / TILE) + 2;
+	var tileX = pixelToTile(player.position.x);
+	var offsetX = TILE + Math.floor(player.position.x % TILE);
+	
+	startX = tileX - Math.floor(maxTiles / 2);
+	
+	if (startX < -1) 
+	{
+		startX = 0;
+		offsetX = 0;
+	}
+	if (startX > MAP.tw - maxTiles) 
+	{
+		startX = MAP.tw - maxTiles + 1;
+		offsetX = TILE;
+	}
+	
+	worldOffsetX = startX * TILE + offsetX;
+
+	for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) 
+	{
+		var idx = 0; for (var y = 0; y < level1.layers[layerIdx].height; y++) 
+		{
+			for (var x = 0; x < level1.layers[layerIdx].width; x++) 
+			{
+				if (level1.layers[layerIdx].data[idx] != 0) 
+				{
 					// the tiles in the Tiled map are base 1 (meaning a value of 0 means no tile), so subtract one from the tileset id to get the 
 					// correct tile 
 					var tileIndex = level1.layers[layerIdx].data[idx] - 1;
@@ -213,7 +270,13 @@ function run()
 	context.fillStyle = "#ccc";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	drawMap();
+	
 	var deltaTime = getDeltaTime();
+
+	player.update(deltaTime); // update the player before drawing the map
+	
+	drawMap();
+	player.draw();
 
 	switch (gameState) 
     {
@@ -249,11 +312,11 @@ function run()
 	// score
 	context.fillStyle = "yellow";
 	context.font = "32px Arial";
-	varscoreText = "Score: " + score;
+	var scoreText = "Score: " + score;
 	context.fillText(scoreText, SCREEN_WIDTH - 170, 35);
 
 	// life counter
-	for (vari = 0; i < lives; i++) 
+	for (var i = 0; i < lives; i++) 
 	{
 		context.drawImage(heartImage, 20 + ((heartImage.width + 2) * i), 10);
 	}
