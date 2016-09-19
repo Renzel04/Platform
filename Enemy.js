@@ -22,7 +22,7 @@ var Enemy = function (x, y)
 
     this.moveRight = true;
     this.pause = 0;
-    }
+    
     /*this.image = document.createElement("img");*/
     this.position = new Vector2();
     this.position.set(9 * TILE, 0 * TILE);
@@ -99,7 +99,7 @@ Enemy.prototype.update = function (dt)
     }
 }
 
-Player.prototype.draw = function () 
+Enemy.prototype.draw = function () 
 {
     //context.drawImage(this.image,this.position.x - worldOffsetX, this.position.y);
     this.sprite.draw(context, this.position.x -worldOffsetX, this.position.y);
