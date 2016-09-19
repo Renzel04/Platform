@@ -82,20 +82,6 @@ var heartImage = document.createElement("img")
 var player = new Player();
 var keyboard = new Keyboard();
 
-//Enemy Layer costant
-var ENEMY_MAXDX = METER * 5;
-var ENEMY_ACCEL = ENEMY_MAXDX * 2;
-
-var enemies = [];
-
-var LAYER_COUNT = 3;
-var LAYER_BACKGOUND = 0;
-var LAYER_PLATFORMS = 1;
-var LAYER_LADDERS = 2;
-
-var LAYER_OBJECT_ENEMIES = 3;
-var LAYER_OBJECT_TRIGGERS = 4;
-
 //constant variables
 var LAYER_COUNT = 3;
 var LAYER_BACKGOUND = 0;
@@ -144,22 +130,9 @@ function initialize()
 					cells[layerIdx][y - 1][x + 1] = 1;
 					cells[layerIdx][y][x + 1] = 1;
 				}
-				else if (cells[layerIdx][y][x] != 1) 
-				{
+				else if (cells[layerIdx][y][x] != 1) {
 					// if we haven't set this cell's value, then set it to 0 now                     
 					cells[layerIdx][y][x] = 0;
-				}
-				idx = 0;
-				for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
-					for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
-						if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
-							var px = tileToPixel(x);
-							var py = tileToPixel(y);
-							var e = new Enemy(px, py);
-							enemies.push(e);
-						}
-						idx++;
-					}
 				}
 				idx++;
 			}
@@ -346,10 +319,6 @@ function run()
 	for (var i = 0; i < lives; i++) 
 	{
 		context.drawImage(heartImage, 20 + ((heartImage.width + 2) * i), 10);
-	}
-	for (var i = 0; i < enemies.length; i++) 
-	{
-		enemies[i].update(deltaTime);
 	}
 }
 
