@@ -149,24 +149,26 @@ function initialize()
 					// if we haven't set this cell's value, then set it to 0 now                     
 					cells[layerIdx][y][x] = 0;
 				}
+				
+			}
+		}
+	}
+/*
+	idx = 0;
+				for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
+		for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
+			if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
+				var px = tileToPixel(x);
+				var py = tileToPixel(y);
+				var e = new Enemy(px, py);
+				enemies.push(e);
 			}
 			idx++;
 		}
-	}
-}
-/*
-idx = 0;
-for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
-	for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
-		if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
-			var px = tileToPixel(x);
-			var py = tileToPixel(y);
-			var e = new Enemy(px, py);
-			enemies.push(e);
-		}
-		idx++;*/
-	}
-musicBackground = new Howl(
+				}
+				idx++;
+*/
+	musicBackground = new Howl(
 		{
 			urls: ["background.ogg"],
 			loop: true,
@@ -347,8 +349,7 @@ function run()
 	{
 		context.drawImage(heartImage, 20 + ((heartImage.width + 2) * i), 10);
 	}
-	for (var i = 0; i < enemies.length; i++) 
-	{
+	for (var i = 0; i < enemies.length; i++) {
 		enemies[i].update(deltaTime);
 	}
 }
