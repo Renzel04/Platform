@@ -24,6 +24,7 @@ var endFrameMillis = Date.now();
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
+var STATE_WIN = 3;
 
 var gameState = STATE_SPLASH;
 
@@ -77,7 +78,6 @@ chuckNorris.src = "hero.png";
 var heartImage = document.createElement("img");
 heartImage.src = "heartImage.png";
 
-var heartImage = document.createElement("img")
 
 var player = new Player();
 var keyboard = new Keyboard();
@@ -206,9 +206,35 @@ function runGame(deltaTime)
 	player.draw();
 	enemy.update(deltaTime);
 	enemy.draw();
+
+	for (var i = 0; i < enemies.length; i++) 
+	{
+		enemies[i].update(deltaTime);
+		enemy[i].update(deltaTime);
+		enemy[i].draw();
+
+		for (var i = o; i< enemies.lenght; i++) {
+			enemies[i].update(deltaTime);
+			enemies[i].draw();
+		}
+
+		score += deltaTime;
+	}
 }
-function runGameOver(deltaTime) {
+function runGameOver(deltaTime) 
+{
+	context.fillStyle = "#000";
+	context.font = "24px Arial";
+	context.fillText("YOU SUCK", 200, 240);
 }
+
+function runWIN(deltaTime) 
+{
+	context.fillStyle = "#000";
+	context.font = "24px Arial";
+	context.fillText("NOT BAD NOOB", 200, 240);
+}
+
 
 // load the image to use for the level tiles 
 var tileset = document.createElement("img");
@@ -290,7 +316,7 @@ function drawMap()
 					var tileIndex = level1.layers[layerIdx].data[idx] - 1;
 					var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) * (TILESET_TILE + TILESET_SPACING);
 					var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_X)) * (TILESET_TILE + TILESET_SPACING);
-					context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, x * TILE, (y - 1) * TILE, TILESET_TILE, TILESET_TILE);
+					context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE,(x- startX)*TILE - offsetX, (y - 1) * TILE, TILESET_TILE, TILESET_TILE);
 				}
 				idx++;
 			}
@@ -320,6 +346,9 @@ function run()
         case STATE_GAMEOVER:
             runGameOver(deltaTime);
             break;
+		case STATE_WIN:
+            runWIN(deltaTime);
+            break;
     }
 	//context.drawImage(chuckNorris, SCREEN_WIDTH/2 - chuckNorris.width/2, SCREEN_HEIGHT/2 - chuckNorris.height/2);
 	
@@ -348,9 +377,7 @@ function run()
 	{
 		context.drawImage(heartImage, 20 + ((heartImage.width + 2) * i), 10);
 	}
-	for (var i = 0; i < enemies.length; i++) {
-		enemies[i].update(deltaTime);
-	}
+	
 }
 
 initialize();

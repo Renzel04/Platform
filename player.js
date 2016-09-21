@@ -208,7 +208,16 @@ Player.prototype.update = function (deltaTime)
     //lossing a life and falling
     if(this.position.y > 600)
     {
-        lives--; this.position.set(9 * TILE, 0 * TILE);
+        lives--; 
+        this.position.set(9 * TILE, 0 * TILE);
+
+        if(lives < 0)
+            gameState = STATE_GAMEOVER;
+    }
+
+    if(this.position.x > 2000)
+    {
+        gameState = STATE_WIN
     }
 }
 
@@ -222,9 +231,9 @@ Player.prototype.draw = function ()
     context.drawImage(this.image, -this.width / 2, -this.height / 2);
     context.restore();*/
 
-    var tx = pixelToTile(this.position.x);
-    var ty = pixelToTile(this.position.y);
+    //var tx = pixelToTile(this.position.x);
+    //var ty = pixelToTile(this.position.y);
 
-    context.fillRect(epixel(tx,tileToPixel(tx)))
+    //context.fillRect(epixel(tx,tileToPixel(tx)))
 
 }
