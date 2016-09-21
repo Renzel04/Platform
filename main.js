@@ -149,7 +149,7 @@ function initialize()
 					// if we haven't set this cell's value, then set it to 0 now                     
 					cells[layerIdx][y][x] = 0;
 				}
-				
+				idx++
 			}
 		}
 	}
@@ -200,7 +200,12 @@ function runSplash(deltaTime)
 	context.font = "24px Arial";
 	context.fillText("SPLASH SCREEN", 200, 240);
 }
-function runGame(deltaTime) {
+function runGame(deltaTime) 
+{
+	player.update(deltaTime);
+	player.draw();
+	enemy.update(deltaTime);
+	enemy.draw();
 }
 function runGameOver(deltaTime) {
 }
@@ -293,6 +298,8 @@ function drawMap()
 	}
 }
 
+
+
 var spawnTimer = 0
 function run() 
 {
@@ -301,11 +308,6 @@ function run()
 	drawMap();
 	
 	var deltaTime = getDeltaTime();
-
-	player.update(deltaTime); // update the player before drawing the map
-	
-	drawMap();
-	player.draw();
 
 	switch (gameState) 
     {
@@ -320,10 +322,7 @@ function run()
             break;
     }
 	//context.drawImage(chuckNorris, SCREEN_WIDTH/2 - chuckNorris.width/2, SCREEN_HEIGHT/2 - chuckNorris.height/2);
-	player.update(deltaTime);
-	player.draw();
-	enemy.update(deltaTime);
-	enemy.draw();
+	
 	// update the frame counter 
 	fpsTime += deltaTime;
 	fpsCount++;
